@@ -2,9 +2,19 @@ import { useEffect, useState } from "react";
 
 interface TaskWindowProps {
   text: string;
+  id: number;
+  list: { text: string; id: number; priority: string }[];
+  priority: string;
+  deleteHandler: Function;
 }
 
-export const TaskWindow = ({ text }: TaskWindowProps) => {
+export const TaskWindow = ({
+  text,
+  id,
+  list,
+  priority,
+  deleteHandler,
+}: TaskWindowProps) => {
   let [textBuffer, setTextBuffer] = useState<string | undefined>(text);
   let [modifiedText, setModifiedText] = useState<string | undefined>(text);
   const [edit, setEdit] = useState(false);
@@ -16,15 +26,14 @@ export const TaskWindow = ({ text }: TaskWindowProps) => {
     "2": "yellow",
     "3": "transparent",
   };
-  const [priority, setPriority] = useState<string>("1");
-
+  const [newPriority, setNewPriority] = useState<string>(priority);
   return (
     <>
       {edit ? (
         <div
           style={{
             border: "2px solid purple",
-            backgroundColor: colors[priority],
+            backgroundColor: colors[newPriority],
           }}
         >
           <textarea
@@ -46,7 +55,7 @@ export const TaskWindow = ({ text }: TaskWindowProps) => {
           >
             Save
           </button>
-          <button>Delete</button>
+          <button onClick={() => deleteHandler(id)}>Delete</button>
           <button
             onClick={() => {
               setEdit(false);
@@ -58,7 +67,8 @@ export const TaskWindow = ({ text }: TaskWindowProps) => {
           <select
             name="task-priority"
             id="task-prior"
-            onChange={(e) => setPriority(e.target.value)}
+            defaultValue={priority}
+            onChange={(e) => setNewPriority(e.target.value)}
           >
             <option value="1">Urgent</option>
             <option value="2">Regular</option>
@@ -69,14 +79,14 @@ export const TaskWindow = ({ text }: TaskWindowProps) => {
         <div
           style={{
             border: "2px solid purple",
-            backgroundColor: colors[priority],
+            backgroundColor: colors[newPriority],
           }}
         >
           <button onClick={() => setEdit(true)}>Edit</button>
           <select
-            name="task-priority"
+            name="task-newpriority"
             id="task-prior"
-            onChange={(e) => setPriority(e.target.value)}
+            onChange={(e) => setNewPriority(e.target.value)}
           >
             <option value="1">Urgent</option>
             <option value="2">Regular</option>
