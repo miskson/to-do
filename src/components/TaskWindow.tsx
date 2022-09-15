@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { AppButton } from "./AppButton";
 
 interface TaskWindowProps {
   text: string;
@@ -44,26 +45,28 @@ export const TaskWindow = ({
             onChange={(e) => setModifiedText(e.target.value)}
             value={modifiedText}
           />
-
-          <button
-            onClick={() => {
+          <AppButton
+            text="Save"
+            clickHandler={() => {
               setEdit(true);
               setTextBuffer(modifiedText);
               setEdit(false);
             }}
-            disabled={!modifiedText}
-          >
-            Save
-          </button>
-          <button onClick={() => deleteHandler(id)}>Delete</button>
-          <button
-            onClick={() => {
+          />
+          <AppButton
+            text="Delete"
+            clickHandler={() => {
+              setEdit(false);
+              deleteHandler(id);
+            }}
+          />
+          <AppButton
+            text="Cancel"
+            clickHandler={() => {
               setEdit(false);
               setModifiedText(textBuffer);
             }}
-          >
-            cancel
-          </button>
+          />
           <select
             name="task-priority"
             id="task-prior"
@@ -82,7 +85,14 @@ export const TaskWindow = ({
             backgroundColor: colors[newPriority],
           }}
         >
-          <button onClick={() => setEdit(true)}>Edit</button>
+          <AppButton text="Edit" clickHandler={() => setEdit(true)} />
+          <AppButton
+            text="Delete"
+            clickHandler={() => {
+              setEdit(false);
+              deleteHandler(id);
+            }}
+          />
           <select
             name="task-newpriority"
             id="task-prior"

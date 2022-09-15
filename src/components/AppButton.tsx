@@ -1,9 +1,13 @@
 import React, { Children } from "react";
 
 interface AppButtonProps {
-  onClick?: React.MouseEvent;
+  text: string;
+  clickHandler?: () => void;
 }
 
-export const AppButton = (onClick: AppButtonProps): JSX.Element => {
-  return <button>sad</button>;
+export const AppButton = ({
+  clickHandler,
+  text,
+}: AppButtonProps): JSX.Element => {
+  return <button onClick={clickHandler}>{text}</button>;
 };

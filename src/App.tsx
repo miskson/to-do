@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { TaskWindow } from "./components/TaskWindow";
 
@@ -20,7 +20,7 @@ function App() {
       priority: "2",
     },
     {
-      text: "somecooltask33333",
+      text: "somecooltask4444",
       id: 4,
       priority: "3",
     },
@@ -30,20 +30,39 @@ function App() {
 
   function deleteTask(id: number) {
     const newList = tasks.concat();
-    newList.splice(
-      tasks.findIndex((elem) => elem.id === id),
-      1
-    );
-    console.log(newList);
-    //setTasks(newList);
+    let index = tasks.findIndex((elem) => elem.id === id);
+    console.log(index);
+    newList.splice(index, 1);
+    // console.log(newList);
+    setTasks(newList);
+  }
+
+  // useEffect(() => {
+  //   console.log("bang", tasks);
+  // }, [tasks, setTasks]);
+
+  function returnRefreshed(
+    arr: { text: string; id: number; priority: string }[]
+  ) {
+    let newarr = arr.map((elem) => (
+      <TaskWindow
+        text={elem.text}
+        id={elem.id}
+        priority={elem.priority}
+        list={tasks}
+        deleteHandler={deleteTask}
+      />
+    ));
+    console.log("newarr", newarr);
+    return newarr;
   }
 
   return (
     <div className="App">
-      <div style={{ border: "10px solid red", height: "90vh" }}>
+      <main style={{ border: "10px solid red", height: "90vh" }}>
         <button>+</button>
         <div style={{ border: "2px solid green", height: "96%" }}>
-          {tasks.map((elem) => (
+          {/* {tasks.map((elem) => (
             <TaskWindow
               text={elem.text}
               id={elem.id}
@@ -51,9 +70,10 @@ function App() {
               list={tasks}
               deleteHandler={deleteTask}
             />
-          ))}
+          ))} */}
+          {returnRefreshed(tasks)}
         </div>
-      </div>
+      </main>
       <footer>
         <p>to-do by miskson :^|</p>
       </footer>
