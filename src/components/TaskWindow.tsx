@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { AppButton } from "./AppButton";
 
+
+
 interface TaskWindowProps {
   text: string;
   id: number;
   list: { text: string; id: number; priority: string }[];
   priority: string;
+  editable?: boolean;
   deleteHandler: Function;
 }
 
@@ -13,12 +16,13 @@ export const TaskWindow = ({
   text,
   id,
   list,
+  editable = false,
   priority,
   deleteHandler,
 }: TaskWindowProps) => {
   let [textBuffer, setTextBuffer] = useState<string | undefined>(text);
   let [modifiedText, setModifiedText] = useState<string | undefined>(text);
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(editable);
   type colorOptions = {
     [key: string]: string;
   };
