@@ -1,143 +1,59 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { AppButton } from "./components/AppButton";
-import { TaskWindow } from "./components/TaskWindow";
-
-type colorOptions = {
-  [key: string]: string;
-};
-export const colors: colorOptions = {
-  "1": "orange",
-  "2": "yellow",
-  "3": "transparent",
-};
 
 function App() {
-  const tasklist = [
-    {
-      text: "somecooltask",
-      id: 1,
-      priority: "2",
-    },
-    {
-      text: "somecooltask22222",
-      id: 2,
-      priority: "1",
-    },
-    {
-      text: "somecooltask33333",
-      id: 3,
-      priority: "2",
-    },
-    {
-      text: "somecooltask4444",
-      id: 4,
-      priority: "3",
-    },
-  ];
-
-  const [tasks, setTasks] = useState(tasklist);
-  const [isAdd, setIsAdd] = useState(false);
+  const [list, setList] = useState<any[]>([]);
+  const [flag, setFlag] = useState(false);
   const [newText, setNewText] = useState("");
-  const [newPriority, setNewPriority] = useState("");
-
-  function deleteTask(id: number) {
-    const newList = tasks.concat();
-    let index = tasks.findIndex((elem) => elem.id === id);
-    console.log(index);
-    newList.splice(index, 1);
-    setTasks(newList);
-  }
-
-  function addTask(text: string, priority: string) {
-    tasks.push({
-      text: text,
-      id: tasklist.length + 1,
-      priority: priority,
-    });
-    setTasks(tasklist);
-    console.log(tasks);
-  }
-
-  function returnRefreshed(
-    arr: { text: string; id: number; priority: string }[]
-  ) {
-    let newarr = arr.map((elem) => (
-      <TaskWindow
-        text={elem.text}
-        id={elem.id}
-        priority={elem.priority}
-        list={tasks}
-        deleteHandler={deleteTask}
-      />
-    ));
-    console.log("newarr", newarr);
-    return newarr;
-  }
 
   return (
     <div className="App">
-      <main style={{ border: "10px solid red", height: "90vh" }}>
-        {isAdd ? (
-          <div
-            style={{
-              border: "2px solid purple",
-              // backgroundColor: colors[newPriority],
-            }}
-          >
+      <header>
+        {flag ? (
+          <div>
             <textarea
-              name="edit-task-name"
-              id="task-edit"
+              name="new-task"
+              id="new-task-field"
               cols={30}
               rows={10}
-              onChange={(e) => setNewText(e.target.value)}
               value={newText}
+              onChange={(e) => setNewText(e.target.value)}
             />
-            <AppButton
-              text="Save"
-              clickHandler={() => {
-                setIsAdd(false);
-                addTask(newText, newPriority);
+            <br />
+            <button
+              onClick={() => {
+                let newList: object[] = list.concat();
+                newList.push({ text: newText });
                 setNewText("");
+                setList(newList);
+                setFlag(false);
               }}
-            />
-            <AppButton
-              text="Cancel"
-              clickHandler={() => {
-                setIsAdd(false);
-                setNewText("");
-              }}
-            />
-            <select
-              name="task-priority"
-              id="task-prior"
-              defaultValue="1"
-              onChange={(e) => setNewPriority(e.target.value)}
             >
-              <option value="1">Urgent</option>
-              <option value="2">Regular</option>
-              <option value="3">Not urgent</option>
-            </select>
+              Save
+            </button>
+            <button onClick={() => setFlag(false)}>cancel</button>
           </div>
         ) : (
-          <AppButton text="+" clickHandler={() => setIsAdd(true)} />
+          <button onClick={() => setFlag(true)}>+</button>
         )}
-        <div style={{ border: "2px solid green", height: "96%" }}>
-          {/* {returnRefreshed(tasks)} */}
-          {tasks.map((elem) => (
-            <TaskWindow
-              text={elem.text}
-              id={elem.id}
-              priority={elem.priority}
-              list={tasks}
-              deleteHandler={deleteTask}
-            />
-          ))}
-        </div>
+      </header>
+      <main>
+        {list
+          .map((elem) => (
+            <div
+              style={{
+                border: "1px solid black",
+                margin: "10px",
+                padding: "10px",
+              }}
+            >
+              <div>{elem.text}</div>
+              <br /> <button>edit</button>
+              <button>done</button>{" "}
+            </div>
+          ))
+          .reverse()}
       </main>
-      <footer>
-        <p>to-do by miskson :^|</p>
-      </footer>
     </div>
   );
 }
