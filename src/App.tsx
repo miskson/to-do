@@ -39,7 +39,7 @@ function App() {
       </header>
       <main>
         {list
-          .map((elem) => (
+          .map((elem, index) => (
             <div
               style={{
                 border: "1px solid black",
@@ -49,7 +49,15 @@ function App() {
             >
               <div>{elem.text}</div>
               <br /> <button>edit</button>
-              <button>done</button>{" "}
+              <button
+                onClick={() => {
+                  let newList: object[] = list.concat();
+                  newList.splice(index, 1);
+                  setList(newList);
+                }}
+              >
+                done
+              </button>
             </div>
           ))
           .reverse()}
