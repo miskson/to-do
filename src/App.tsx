@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
+import { AppButton } from "./components/AppButton";
 
 function App() {
   const [list, setList] = useState<any[]>([]);
@@ -20,46 +21,56 @@ function App() {
               onChange={(e) => setNewText(e.target.value)}
             />
             <br />
-            <button
-              onClick={() => {
+            <AppButton
+              clickHandler={() => {
                 let newList: object[] = list.concat();
                 newList.push({ text: newText });
                 setNewText("");
                 setList(newList);
                 setFlag(false);
               }}
-            >
-              Save
-            </button>
-            <button onClick={() => setFlag(false)}>cancel</button>
+              text="save"
+            />
+            <AppButton
+              clickHandler={() => {
+                setFlag(false);
+                setNewText("");
+              }}
+              text="cancel"
+            />
           </div>
         ) : (
-          <button onClick={() => setFlag(true)}>+</button>
+          <AppButton clickHandler={() => setFlag(true)} text="+" />
         )}
       </header>
       <main>
         {list
-          .map((elem, index) => (
-            <div
-              style={{
-                border: "1px solid black",
-                margin: "10px",
-                padding: "10px",
-              }}
-            >
-              <div>{elem.text}</div>
-              <br /> <button>edit</button>
-              <button
-                onClick={() => {
-                  let newList: object[] = list.concat();
-                  newList.splice(index, 1);
-                  setList(newList);
+          .map((elem, index) => {
+            console.log(typeof elem);
+            return (
+              <div
+                style={{
+                  border: "1px solid black",
+                  margin: "10px",
+                  padding: "10px",
                 }}
               >
-                done
-              </button>
-            </div>
-          ))
+                <>
+                  <div>{elem.text}</div>
+                  <br />
+                  <AppButton text="edit" />
+                  <AppButton
+                    clickHandler={() => {
+                      let newList: object[] = list.concat();
+                      newList.splice(index, 1);
+                      setList(newList);
+                    }}
+                    text="done"
+                  />
+                </>
+              </div>
+            );
+          })
           .reverse()}
       </main>
     </div>
