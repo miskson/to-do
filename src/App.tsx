@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { AppButton } from "./components/AppButton";
+import { Task } from "./components/Task";
 
 function App() {
   const [list, setList] = useState<any[]>([]);
@@ -47,28 +48,14 @@ function App() {
         {list
           .map((elem, index) => {
             console.log(typeof elem);
+            console.log(list);
             return (
-              <div
-                style={{
-                  border: "1px solid black",
-                  margin: "10px",
-                  padding: "10px",
-                }}
-              >
-                <>
-                  <div>{elem.text}</div>
-                  <br />
-                  <AppButton text="edit" />
-                  <AppButton
-                    clickHandler={() => {
-                      let newList: object[] = list.concat();
-                      newList.splice(index, 1);
-                      setList(newList);
-                    }}
-                    text="done"
-                  />
-                </>
-              </div>
+              <Task
+                text={elem.text}
+                index={index}
+                taskList={list}
+                refresher={setList}
+              />
             );
           })
           .reverse()}
