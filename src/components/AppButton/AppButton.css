@@ -1,0 +1,12 @@
+.to-do__add-btn {
+  font-size: 14px;
+  /* background-color: transparent; */
+  padding: 5px;
+  margin: 4px 2px;
+  border: 1px solid blue;
+  border-radius: 8px;
+}
+
+.to-do__add-btn :hover {
+  color: red;
+}

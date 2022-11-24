@@ -1,22 +1,36 @@
+import { stringify } from "querystring";
 import React, { SetStateAction, useEffect, useState } from "react";
-import { AppButton } from "./AppButton";
+import { AppButton } from "./AppButton/AppButton";
 
 interface TaskProps {
   text: string;
+  priority: number;
   taskList: any[];
   index: number;
   refresher: React.Dispatch<SetStateAction<any[]>>;
 }
 
+interface Icolors {
+  1: string;
+  2: string;
+  3: string;
+}
+
 export const Task = ({
   text,
+  priority,
   taskList,
   index,
   refresher,
 }: TaskProps): JSX.Element => {
-  //todo: text editing
   const [flag, setFlag] = useState(false);
   const [textBuf, setTextBuf] = useState(text);
+
+  const colors: Icolors = {
+    1: "blue",
+    2: "orange",
+    3: "red",
+  };
 
   useEffect(() => {
     setTextBuf(text);
@@ -25,8 +39,10 @@ export const Task = ({
   return (
     <div
       style={{
-        border: "1px solid black",
+        border: "2px solid",
+        borderColor: colors[priority as keyof Icolors],
         margin: "10px",
+        borderRadius: "5px",
         padding: "10px",
       }}
     >
